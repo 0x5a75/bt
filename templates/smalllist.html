@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ static_url("css/small.css") }}" />
+    <style type="text/css">
+        a {color: #428bca; text-decoration: none;}
+        p {display: block; -webkit-margin-before: 0.1em; -webkit-margin-after: 0.1em; -webkit-margin-start: 0.1px; -webkit-margin-end: 0.1px;}
+        html {font-family: sans-serif; -webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
+        body {margin: 0;}
+    </style>
+</head>
+<body>
+<section class="ac-container">
+{% if results %}
+    {% for i, result in results %}
+        <div>
+            <input id="ac-{{i+1}}" name="accordion-1" type="radio" {% if i==0 %}checked{% end %} />
+            <label for="ac-{{i+1}}">{{i+1}}.{{result["name"]}}</label>
+            <article class="ac-small">
+                <p>Size：{% if "total_size" in result %}{{ result["total_size"] }}{%else%}None{%end%}&nbsp;
+                Date：{% if "creation_date" in result %}{{ result["creation_date"] }}{%else%}None{%end%}&nbsp;
+                <a href="{{result["magnet"]}}">磁力链接</a></p>
+            </article>
+        </div>
+    {% end %}
+{% else %}
+    {{error}}
+{% end %}
+</section>
+</body>
+
+</html>

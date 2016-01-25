@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block body %}
+{% if results %}
+<div class="container">
+    <div class="row">
+        <div class="main col-lg-12">
+            {% if info %}
+            <div class="list-group">
+                <h3>查询到&nbsp;&nbsp;{{info['total_found']}}&nbsp;&nbsp;条结果（用时&nbsp;&nbsp;{{info['time']}}&nbsp;&nbsp;秒）
+                </h3>
+            </div>
+            {% end %}
+            {% for i, result in results %}
+            <div class="list-group">
+                <h4>
+                    <a href="#">{{(page-1)*10+i+1}}.&nbsp;&nbsp;&nbsp;&nbsp;{{result["name"]}}</a>
+                </h4>
+                <p>创建时间：{% if "creation_date" in result %}{{ result["creation_date"] }}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                文件数：{% if "num_files" in result %}{{ result["num_files"] }}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                总大小：{% if "total_size" in result %}{{ result["total_size"] }}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                总请求数：{%if "query" in result%}{{result["query"]}}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                发现时间：{%if "updates" in result%}{{result["updates"]}}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                虚假种子：{%if "fack" in result%}{{result["fack"]}}{%else%}None{%end%}&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{{result["magnet"]}}">磁力链接</a>&nbsp;&nbsp;
+                <i class="fa fa-copy fa-lg copy" onclick="copy('{{result["magnet"]}}')"></i>
+                </p>
+                {%if "files" in result%}
+                    {% for file in result["files"] %}
+                        <li>{% raw file %}</li>
+                    {% end %}
+                {%else%}
+                    <li>Bitsnoop old data up to 8th February 2012 </li>
+                {%end%}
+            </div>
+            {% end %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            {% module Paginator(page, page_size, results_count) %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="main col-lg-12">
+            <div class="list-group">
+                <h3>{{ info }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+<!-- JavaScript -->
+<script type="text/javascript">
+function copy(text) {
+    if(window.clipboardData){
+        window.clipboardData.clearData();
+        window.clipboardData.setData("Text", text);
+    }
+    else{
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+    }
+}
+</script>
+{% end %}
+{% block footer%}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="copyright">Copyright &copy; Love Chan 2015. All Rights Reserved</p>
+        </div>
+    </div>
+</div>
+{% end %}
